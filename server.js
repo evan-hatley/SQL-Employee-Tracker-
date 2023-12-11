@@ -29,6 +29,50 @@ const questions = [
     }
 ];
 
+const departmentQuestions = [
+    {
+        type: 'input',
+        message: 'What would you like to call this department?',
+        name: 'deptName'
+    }]
+
+const roleQuestions = [
+    {
+        type: 'input',
+        message: 'What is the title of the role?',
+        name: 'role'
+    },
+    {
+        type: 'input',
+        message: 'What is the salary for the role?',
+        name: 'salary'
+    },
+    {
+        type: 'list',
+        message: 'What department does this role belong in?',
+        // Stand-in choices until I figure out how to access the department table
+        choices: ['1', '2', '3']
+    }]
+
+const employeeQuestions = [
+    {
+        type: 'input',
+        message: "What is the employee's first name?",
+        name: 'firstName'
+    },
+    {
+        type: 'input',
+        message: "What is the employee's last name?",
+        name: 'lastName'
+    },
+    {
+        type: 'input',
+        message: "What is the employee's role?",
+        name: 'employeeRole'
+    },
+    
+]
+
 inquirer.prompt(questions)
     .then((response) => {
         switch (response.choices) {
@@ -93,15 +137,16 @@ function viewAllEmployees() {
 };
 
 function addDepartment() {
-
+    inquirer.prompt(departmentQuestions)
+    
 }
 
 function addRole() {
-
+    inquirer.prompt(roleQuestions)
 }
 
 function addEmployee() {
-
+    inquirer.prompt(employeeQuestions)
 }
 
 function updateEmployeeRole() {
