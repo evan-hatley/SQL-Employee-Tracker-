@@ -31,7 +31,7 @@ const questions = [
 
 inquirer.prompt(questions)
     .then((response) => {
-        switch (response.choice) {
+        switch (response.choices) {
             case 'View All Departments':
                 viewAllDepartments();
                 break;
@@ -63,17 +63,34 @@ inquirer.prompt(questions)
     });
 
 function viewAllDepartments() {
-    db.query('SELECT * FROM department')
-
-}
+    db.query('SELECT * FROM department', (err, results) => {
+        if (err) {
+            console.error('Error fetching departments', err);
+            return;
+        }
+        console.table(results);
+    });
+};
 
 function viewAllRoles() {
-    db.query('SELECT * FROM role')
-}
+    db.query('SELECT * FROM role', (err, results) => {
+        if (err) {
+            console.error('Error fetching roles', err);
+            return;
+        }
+    console.table(results);
+    });
+};
 
 function viewAllEmployees() {
-    db.query('SELECT * FROM employee')
-}
+    db.query('SELECT * FROM employee', (err, results) => {
+        if (err) {
+            console.error('Error fetching employees', err);
+                return;
+            }
+    console.table(results);
+    });
+};
 
 function addDepartment() {
 
