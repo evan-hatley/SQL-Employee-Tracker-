@@ -1,3 +1,4 @@
+// Adding dependencies and setting up a connection to the schema
 const inquirer = require("inquirer");
 const mysql = require("mysql2");
 
@@ -12,6 +13,7 @@ const db = mysql.createConnection({
 console.log('Connected to Employee_Tracker database.')
 );
 
+// Creating all of the inquirer prompts that I can use within later functions
 const questions = [
     {
         type: 'list',
@@ -24,7 +26,7 @@ const questions = [
             'Add a Department',
             'Add a Role',
             'Add an Employee',
-            'Update an Employee Role'
+            'Update an Employee Role',
         ]
     }
 ];
@@ -33,46 +35,65 @@ const departmentQuestions = [
     {
         type: 'input',
         message: 'What would you like to call this department?',
-        name: 'deptName'
+        name: 'deptName',
     }]
 
 const roleQuestions = [
     {
         type: 'input',
         message: 'What is the title of the role?',
-        name: 'role'
+        name: 'role',
     },
     {
         type: 'input',
         message: 'What is the salary for the role?',
-        name: 'salary'
+        name: 'salary',
     },
     {
-        type: 'list',
+        type: 'input',
         message: 'What department does this role belong in?',
-        // Stand-in choices until I figure out how to access the department table
-        choices: ['1', '2', '3']
+        name: 'department',
     }]
 
 const employeeQuestions = [
     {
         type: 'input',
         message: "What is the employee's first name?",
-        name: 'firstName'
+        name: 'firstName',
     },
     {
         type: 'input',
         message: "What is the employee's last name?",
-        name: 'lastName'
+        name: 'lastName',
     },
     {
         type: 'input',
         message: "What is the employee's role?",
-        name: 'employeeRole'
+        name: 'employeeRole',
     },
-    
+    {
+        type: 'input',
+        message: "Who is the employee's manager?",
+        name: 'manager',
+    }
 ]
 
+const updateEmployee = [
+    {
+        type: 'list',
+        name: 'employeeId',
+        message: 'Which employee do you want to update?',
+        choices: employeeChoices
+    },
+    {
+        type: 'list',
+        name: 'roleId',
+        message: 'What is this employees new role?',
+        choices: roleChoices
+    }
+]
+
+// Using switch case functions for inquirer selections. Would love to learn how to switch between options after running one function without closing out an instance of bash or mysql in the terminal
 inquirer.prompt(questions)
     .then((response) => {
         switch (response.choices) {
@@ -106,6 +127,7 @@ inquirer.prompt(questions)
         }
     });
 
+    // Able to copy/paste the select all functions for departments, roles, and employees here. Just needed to switch out function/table names
 function viewAllDepartments() {
     db.query('SELECT * FROM department', (err, results) => {
         if (err) {
@@ -136,20 +158,33 @@ function viewAllEmployees() {
     });
 };
 
+// 
 function addDepartment() {
     inquirer.prompt(departmentQuestions)
-    
+        .then((answers) => {
+            const query = `INSERT INTO department (name) VALUE (?)`;
+            db.query(query, [answers.deptName])
+        })
 }
 
 function addRole() {
     inquirer.prompt(roleQuestions)
+        .then((answers) => {
+            const query = `INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`;
+            db.query(query, [answers.role, answers.salary, answers.departmentId]);
+        })
 }
 
 function addEmployee() {
     inquirer.prompt(employeeQuestions)
+        .then((answers) => {
+            const query = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)`;
+            db.query(query, [answers.first_name, answers.last_name, answers.role_id, answers.manager_id]); 
+        })
 }
 
 function updateEmployeeRole() {
-
-
+    db.query('SELECT id, title FROM role')
+    
 }
+

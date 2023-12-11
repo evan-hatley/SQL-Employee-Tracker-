@@ -9,6 +9,7 @@ CREATE TABLE department (
     name varchar(30) NOT NULL
 );
 
+-- Creates the tables based on the Acceptance Criteria
 CREATE TABLE role (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(30),
