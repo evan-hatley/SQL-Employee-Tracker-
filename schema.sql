@@ -4,12 +4,12 @@ CREATE DATABASE employee_tracker_db;
 
 USE employee_tracker_db;
 
+-- Creates the tables based on the Acceptance Criteria
 CREATE TABLE department (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     name varchar(30) NOT NULL
 );
 
--- Creates the tables based on the Acceptance Criteria
 CREATE TABLE role (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(30),

@@ -93,7 +93,8 @@ const updateEmployee = [
     }
 ]
 
-// Using switch case functions for inquirer selections. Would love to learn how to switch between options after running one function without closing out an instance of bash or mysql in the terminal
+// Using switch case functions for inquirer selections within `promptUser` to continue the inquirer prompts after a user makes a selection. 
+function promptUser () {
 inquirer.prompt(questions)
     .then((response) => {
         switch (response.choices) {
@@ -126,6 +127,7 @@ inquirer.prompt(questions)
                 break;
         }
     });
+}
 
     // Able to copy/paste the select all functions for departments, roles, and employees here. Just needed to switch out function/table names
 function viewAllDepartments() {
@@ -135,6 +137,7 @@ function viewAllDepartments() {
             return;
         }
         console.table(results);
+        promptUser();
     });
 };
 
@@ -145,6 +148,7 @@ function viewAllRoles() {
             return;
         }
     console.table(results);
+    promptUser();
     });
 };
 
@@ -155,6 +159,7 @@ function viewAllEmployees() {
                 return;
             }
     console.table(results);
+    promptUser();
     });
 };
 
@@ -164,6 +169,7 @@ function addDepartment() {
         .then((answers) => {
             const query = `INSERT INTO department (name) VALUE (?)`;
             db.query(query, [answers.deptName])
+            promptUser();
         })
 }
 
@@ -172,7 +178,9 @@ function addRole() {
         .then((answers) => {
             const query = `INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`;
             db.query(query, [answers.role, answers.salary, answers.departmentId]);
+            promptUser();
         })
+
 }
 
 function addEmployee() {
@@ -180,7 +188,9 @@ function addEmployee() {
         .then((answers) => {
             const query = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)`;
             db.query(query, [answers.first_name, answers.last_name, answers.role_id, answers.manager_id]); 
+            promptUser();
         })
+
 }
 
 function updateEmployeeRole() {
@@ -188,3 +198,4 @@ function updateEmployeeRole() {
     
 }
 
+promptUser();
