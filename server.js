@@ -14,6 +14,7 @@ console.log('Connected to Employee_Tracker database.')
 );
 
 // Creating all of the inquirer prompts that I can use within later functions
+// I realized far too late I should have included the inquirer prompts within the local scope, rather than the global. This is making it way tougher to get the data needed in later functions
 const questions = [
     {
         type: 'list',
@@ -78,20 +79,20 @@ const employeeQuestions = [
     }
 ]
 
-const updateEmployee = [
-    {
-        type: 'list',
-        name: 'employeeId',
-        message: 'Which employee do you want to update?',
-        choices: employeeChoices
-    },
-    {
-        type: 'list',
-        name: 'roleId',
-        message: 'What is this employees new role?',
-        choices: roleChoices
-    }
-]
+// const updateEmployee = [
+//     {
+//         type: 'list',
+//         name: 'employeeId',
+//         message: 'Which employee do you want to update?',
+//         choices: employeeChoices
+//     },
+//     {
+//         type: 'list',
+//         name: 'roleId',
+//         message: 'What is this employees new role?',
+//         choices: roleChoices
+//     }
+// ]
 
 // Using switch case functions for inquirer selections within `promptUser` to continue the inquirer prompts after a user makes a selection. 
 function promptUser () {
@@ -129,7 +130,7 @@ inquirer.prompt(questions)
     });
 }
 
-    // Able to copy/paste the select all functions for departments, roles, and employees here. Just needed to switch out function/table names
+    // Able to copy/paste the select * functions for departments, roles, and employees here. Just needed to switch out function/table names
 function viewAllDepartments() {
     db.query('SELECT * FROM department', (err, results) => {
         if (err) {
@@ -176,25 +177,29 @@ function addDepartment() {
 function addRole() {
     inquirer.prompt(roleQuestions)
         .then((answers) => {
+            const deptQuery = 'SELECT id FROM department WHERE name = ?';
+            db.query(deptQuery, [answers.department]);
+            let department_id = answers.department;
             const query = `INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)`;
-            db.query(query, [answers.role, answers.salary, answers.departmentId]);
+            db.query(query, [answers.role, answers.salary, department_id]);
             promptUser();
         })
-
 }
-
+// Struggling to add a manager_id to this function. Everything is coming back null and not adding to the database
 function addEmployee() {
     inquirer.prompt(employeeQuestions)
         .then((answers) => {
+            const roleQuery = 'SELECT manager_id from role WHERE name = ?';
+            db.query(roleQuery, [answers.role]);
+            let manager_id = answers.role;
             const query = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)`;
-            db.query(query, [answers.first_name, answers.last_name, answers.role_id, answers.manager_id]); 
+            db.query(query, [answers.first_name, answers.last_name, answers.role_id, manager_id]); 
             promptUser();
         })
-
 }
 
 function updateEmployeeRole() {
-    db.query('SELECT id, title FROM role')
+    db.query('UPDATE id, title FROM role')
     
 }
 
