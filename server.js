@@ -7,7 +7,7 @@ const PORT = process.env.PORT || 3000;
 const db = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "Mac+Ellie2023",
+    password: "password",
     database: "employee_tracker_db"
 },
 console.log('Connected to Employee_Tracker database.')

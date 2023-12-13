@@ -2,7 +2,7 @@
 
 ## Description
 
-  This project utilizes mysql, Node.js, and Inquirer to create a database of employees, their roles, and departments for a business. A link to the walkthrough video can be found [here]().
+  This project utilizes mysql, Node.js, and Inquirer to create a database of employees, their roles, and departments for a business. A link to the walkthrough video can be found [here](https://drive.google.com/file/d/153R0fZc1xewUy38vuaq9_6iUFh8t38FC/view).
 
 ## User Story
 
