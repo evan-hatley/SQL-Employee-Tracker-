@@ -198,9 +198,11 @@ function addEmployee() {
         })
 }
 
-function updateEmployeeRole() {
-    db.query('UPDATE id, title FROM role')
+// Unfortunately ran out of time to address the updateEmployee function
+
+// function updateEmployeeRole() {
+//     db.query('UPDATE id, title FROM role')
     
-}
+// }
 
 promptUser();
