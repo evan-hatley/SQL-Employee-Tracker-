@@ -60,22 +60,22 @@ const employeeQuestions = [
     {
         type: 'input',
         message: "What is the employee's first name?",
-        name: 'firstName',
+        name: 'first_name',
     },
     {
         type: 'input',
         message: "What is the employee's last name?",
-        name: 'lastName',
+        name: 'last_name',
     },
     {
         type: 'input',
         message: "What is the employee's role?",
-        name: 'employeeRole',
+        name: 'role_id',
     },
     {
         type: 'input',
         message: "Who is the employee's manager?",
-        name: 'manager',
+        name: 'manager_id',
     }
 ]
 
@@ -185,15 +185,15 @@ function addRole() {
             promptUser();
         })
 }
-// Struggling to add a manager_id to this function. Everything is coming back null and not adding to the database
+// Due to the structure of the role_ and manager_id, user needs to input the id number rather than the exact user text input, i.e having to type 1 rather than 'Salesperson'
 function addEmployee() {
     inquirer.prompt(employeeQuestions)
         .then((answers) => {
-            const roleQuery = 'SELECT manager_id from role WHERE name = ?';
-            db.query(roleQuery, [answers.role]);
-            let manager_id = answers.role;
+            console.log(answers);
             const query = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)`;
-            db.query(query, [answers.first_name, answers.last_name, answers.role_id, manager_id]); 
+            db.query(query, [answers.first_name, answers.last_name, answers.role_id, answers.manager_id], (err) => {
+                console.log(err);
+            }); 
             promptUser();
         })
 }
